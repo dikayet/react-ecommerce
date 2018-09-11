@@ -1,0 +1,20 @@
+.wrapper-main {
+	width: 95%;
+	margin: 0 auto;
+}
+
+@media (min-width: 500px) {
+	.wrapper-main {
+		width: 90%;
+	}
+}
+@media (min-width: 850px) {
+	.wrapper-main {
+		width: 80%;
+	}
+}
+@media (min-width: 1100px) {
+	.wrapper-main {
+		width: 75%;
+	}
+}
