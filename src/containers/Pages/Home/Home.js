@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
 
 import './Home.css';
 
@@ -36,7 +35,6 @@ class Home extends Component {
 				this.setState({
 					videoWidth: width
 				});
-				console.log('resize');
 		}}, 1000);
 	}
 
@@ -55,24 +53,6 @@ class Home extends Component {
 				<section className="video-home" ref={ref => this.videoContainer = ref} >
 					<h2>Allow your style to match your ambition!</h2>
 					<iframe src="https://player.vimeo.com/video/225104384?byline=0&amp;portrait=0" width={this.state.videoWidth} height={this.state.videoWidth/1.77} frameBorder="0" title="video"></iframe>
-				</section>
-				<section className="subs">
-					<ul class="subs__links">
-						<h4>Links</h4>
-						<li><Link to="/news">News</Link></li>
-						<li><Link to="/story">Our Story</Link></li>
-						<li><Link to="/faq">FAQ</Link></li>
-						<li><Link to="/policies">Return Policy</Link></li>
-						<li><Link to="/contact">Contact</Link></li>
-					</ul>
-					<div className="subs__email-form">
-						<h4>Be in the know</h4>
-						<p>Sign up for the latest news, offers and styles</p>
-						<form onSubmit={this.onSubsSubmit}>
-							<input type="email" placeholder="Your email" />
-							<button type="submit">Subscribe</button>
-						</form>
-					</div>
 				</section>
 			</Fragment>
 		)

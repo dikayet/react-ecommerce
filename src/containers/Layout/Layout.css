@@ -1,0 +1,77 @@
+.subs {
+	display: flex;
+	flex-direction: column-reverse;
+	border-top: 1px solid lightgrey;
+	margin-top: 3rem;
+	text-align: center;
+	padding-top: 1rem;
+}
+
+.subs__links {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	margin-top: 2rem;
+}
+
+.subs__links li {
+	margin-top: .6em;
+}
+
+.subs__email-form {
+	width: 100%;
+	box-sizing: border-box;
+	text-align: center;
+}
+.subs__email-form .input {
+	margin-right: .23rem;
+	margin-left: -.23rem;
+}
+
+.subs__email-form form {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+footer {
+	margin-top: 4rem;
+	border-top: 1px solid lightgrey;
+	font-size: .7em;
+	flex-shrink: 0;
+}
+
+@media (min-width: 600px) {
+	.subs {
+		flex-direction: row;
+	}
+	.subs__links {
+		width: 50%;
+		margin: 0;
+		text-align: left;
+	}
+	.subs__email-form {
+		width: 50%;
+		margin: 0;
+		text-align: left;
+	}
+	.subs__email-form .input {
+		margin: 0;
+	}
+}
+
+@media (min-width: 800px) {
+	.subs__email-form form {
+		justify-content: center;
+		flex-direction: row;
+	}
+	.subs__email-form .input {
+		display: inline-block;
+		width: 80%;
+		max-width: 40rem;
+	}
+	.subs__email-form .button {
+		display: inline-block;
+		width: 20%;
+	}
+}
