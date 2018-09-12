@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link, withRouter} from 'react-router-dom';
 
 import './Navigation.css';
@@ -65,6 +65,7 @@ class Navigation extends Component {
 			);
 		}
 		return (
+			<Fragment>
 			<nav className="nav-top">
 				<Wrapper>
 					<div className="nav-top__flex">
@@ -92,7 +93,7 @@ class Navigation extends Component {
 								onBlur={this.onSearchBlur}
 								onChange={this.onSearchChange}
 								ref={ref => this.searchInputRef = ref}
-							/>
+								/>
 						</form>
 						<div className="nav-top__cart-container--desktop">
 							<img className="nav-top__cart-icon" src={cartIcon} alt="cart_icon" />
@@ -104,6 +105,8 @@ class Navigation extends Component {
 				</Wrapper>
 				{mobileSearch}
 			</nav>
+			<div className="top-margin"></div>
+		</Fragment>
 		)
 	}
 }

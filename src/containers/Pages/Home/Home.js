@@ -16,14 +16,14 @@ import shorts from '../../../assets/categories/shorts.jpg';
 class Home extends Component {
 	state = {
 		categories: [
-			['Accessories', accessories, '/categories/accessories'],
-			['Footwear', footwear, '/categories/footwear'],
-			['Denim', denim, '/categories/denim'],
-			['Outwear', outwear, '/categories/outwear'],
-			['Pants', pants, '/categories/pants'],
-			['Shirts', shirts, '/categories/shirts'],
-			['T-Shirts', tshirts, '/categories/tshirts'],
-			['Shorts', shorts, '/categories/shorts'],
+			['Accessories', accessories, '/accessories'],
+			['Footwear', footwear, '/footwear'],
+			['Denim', denim, '/denim'],
+			['Outwear', outwear, '/outwear'],
+			['Pants', pants, '/pants'],
+			['Shirts', shirts, '/shirts'],
+			['T-Shirts', tshirts, '/tshirts'],
+			['Shorts', shorts, '/shorts'],
 		],
 		videoWidth: null
 	}

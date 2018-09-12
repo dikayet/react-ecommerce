@@ -2,11 +2,4 @@
 	display: flex;
 	flex-wrap: wrap;
 	margin-bottom: 5rem;
-	margin-top: 8rem;
-}
-
-@media (max-width: 600px) {
-	.home-categories {
-		margin-top: 3rem;
-	}
 }

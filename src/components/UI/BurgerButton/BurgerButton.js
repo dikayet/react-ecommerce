@@ -8,7 +8,7 @@ const BurgerButton = props => {
 		classes.push('open');
 	}
 	return (
-		<div className={classes.join(' ')}>
+		<div className={classes.join(' ')} {...props}>
 			<span></span>
 			<span></span>
 			<span></span>

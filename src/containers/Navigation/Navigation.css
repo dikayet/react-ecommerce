@@ -84,6 +84,10 @@
 	margin-top: .2rem;
 }
 
+.top-margin {
+	height: 3rem;
+}
+
 /* MEDIA */
 
 @media (min-width: 600px) {
@@ -110,7 +114,10 @@
 		right: 0;
 		z-index: 10;
 	}
-
+	.top-margin {
+		height: 8rem;
+	}
+	
 
 }
 
