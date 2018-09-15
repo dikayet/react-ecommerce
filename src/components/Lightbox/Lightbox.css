@@ -1,0 +1,57 @@
+.lightbox {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: white;
+	z-index: 100;
+	padding: 0 3rem;
+	/*display: none;*/
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	touch-action: none;
+}
+
+.mainImage {
+	height: 100vh;
+	width: auto;
+	margin: 0 auto;
+	display: block;
+	cursor: zoom-out;
+}
+
+.lbExit {
+	position: fixed;
+	top: 1rem;
+	right: 1rem;
+	z-index: 101;
+	padding: 1rem 2rem;
+	cursor: pointer;
+	height: 1.5rem;
+	width: auto;
+}
+
+.arrowLeft,
+.arrowRight {
+	position: fixed;
+	height: 6rem;
+	width: 6rem;
+	cursor: pointer;
+}
+.arrowRight {
+	right: 0;
+}
+.arrowLeft {
+	left: 0;
+}
+
+.arrowLeft:hover,
+.arrowRight:hover,
+.lbExit:hover,
+.thumbnailPreviewLeftArrow:hover,
+.thumbnailPreviewRightArrow:hover,
+.thumbnailPreviewCloseBtn:hover {
+	opacity: .6;
+}

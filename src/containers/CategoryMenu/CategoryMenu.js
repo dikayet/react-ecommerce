@@ -28,7 +28,6 @@ class CategoryMenu extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		let	categories = (
 			<ul className="categoryList">
 				{this.state.categories.map(el => (
