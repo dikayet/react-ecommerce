@@ -35,3 +35,24 @@
 #productsFilter {
 	margin-left: auto;
 }
+
+
+@media (max-width: 800px) {
+	.product {
+		width: 48%;
+		margin-bottom: 3em;
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.product:nth-child(2n) {
+		margin-left: 2%;
+	}
+}
+@media (max-width: 600px) {
+	.product {
+		width: 100%;
+		display: block;
+		margin-right: 0;
+		margin-bottom: 1rem;
+	}
+}

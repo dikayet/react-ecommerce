@@ -1,4 +1,4 @@
-.input-email {
+.email {
 	width: 100%;
 	background-color: #eee;
 	padding: 1em .5em;
@@ -7,4 +7,18 @@
 	font-size: 1rem;
 	border: none;
 	box-sizing: border-box;
+}
+.select {
+	background-color: #f4f4f4;
+	-webkit-appearance: none;
+	border-radius: 0;
+	padding: 0.8em 1em;
+	padding-right: 2em;
+	border: none;
+	border-radius: 0;
+	background-image: url('../../../assets/icons/small-arrow-down.png');
+	background-position: right 10px center;
+	background-repeat: no-repeat;
+	background-size: .5em;
+	cursor: pointer;
 }

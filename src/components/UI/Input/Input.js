@@ -1,16 +1,20 @@
 import React from 'react';
 
-import './Input.css';
+import styles from './Input.css';
 
 const Input = props => {
 	switch (props.element) {
 		case 'input':
 			return (
-				<input className="input-email" {...props}/>
+				<input className={styles.email} {...props}/>
 			);
 		case 'textarea':
 		return (
-			<teaxtarea className="input-email" {...props}>{props.children}</teaxtarea>
+			<teaxtarea className={styles.email} {...props}>{props.children}</teaxtarea>
+			);
+		case 'select':
+			return (
+				<select className={styles.select} {...props}>{props.children}</select>
 			);
 	
 		default:

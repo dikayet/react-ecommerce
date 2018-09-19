@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom'
 
-import './CategoryMenu.css';
+import styles from './CategoryMenu.css';
+import { categories } from '../../shared/exports';
 
 import BurgerButton from '../../components/UI/BurgerButton/BurgerButton';
 
 class CategoryMenu extends Component {
 	state = {
 		open: false,
-		categories: [
-			['All', 'all'],
-			['Accessories', 'accessories'],
-			['Footwear', 'footwear'],
-			['Denim', 'denim'],
-			['Outwear', 'outwear'],
-			['Pants', 'pants'],
-			['Shirts', 'shirts'],
-			['T-Shirts', 'tshirts'],
-			['Shorts', 'shorts'],
-		]
 	}
 
 	toggleMenu = e => {
@@ -28,26 +18,26 @@ class CategoryMenu extends Component {
 	}
 
 	render() {
-		let	categories = (
-			<ul className="categoryList">
-				{this.state.categories.map(el => (
-					<li key={el[1]}><Link style={this.props.match.params.category === el[1] ? {
+		let	categoriesList = (
+			<ul className={styles.list}>
+				{categories.map(el => (
+					<li key={el.link}><Link style={this.props.match.params.category === el.link ? {
 						fontSize: '1.5rem',
 						fontWeight: '700'
-					} : null} onClick={this.toggleMenu} to={'/' + el[1]}>{el[0]}</Link></li>
+					} : null} onClick={this.toggleMenu} to={'/' + el.link}>{el.name}</Link></li>
 				))}
 			</ul>
 		);
 		return (
-			<div className="withCategoryMenu">
-				<div className="categoryMenu--mobile">
+			<div className={styles.container}>
+				<div className={styles.mobile}>
 					<BurgerButton style={{marginBottom: '1.8rem'}} onClick={this.toggleMenu} open={this.state.open}/>
-					{this.state.open ? categories : null}
+					{this.state.open ? categoriesList : null}
 				</div>
-				<div className="categoryMenu--desktop">
-					{categories}
+				<div className={styles.desktop}>
+					{categoriesList}
 				</div>
-				<div className="withCategoryMenuContent">
+				<div className={styles.content}>
 					{this.props.children}
 				</div>
 			</div>

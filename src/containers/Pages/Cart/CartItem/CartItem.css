@@ -1,0 +1,52 @@
+.table tr {
+	transition: .2s ease-in-out;
+}
+.productTDtitle {
+	width: 80%;
+	text-align: left !important;
+}
+.productTDtitle img{
+	height: 15rem;
+	width: auto;
+	margin-right: 1rem;
+}
+.productTDtitle .container {
+	display: block;
+}
+.productTDtitle h4 {
+	margin: 0;
+	padding-bottom: .5em;
+}
+.productTDtitle {
+	display: flex;
+	align-items: center;
+	/*justify-content: center;*/
+}
+.cartQuant {
+	background-image: none;
+	width: 2rem;
+	padding-right: 0;
+	padding-left: .8em;
+	transition: .1s ease-in-out;
+	border: 1px solid transparent;
+	position: relative;
+}
+.cartQuantMax {
+	color: red;
+	position: absolute;
+	top: calc(50% - .5em);
+	left: calc(50% - 1em);
+	display: flex;
+	align-content: center;
+	text-align: center;
+
+}
+
+.removeCartItem {
+	display: block;
+	margin-top: 1.5em;
+	cursor: pointer;
+}
+.removeCartItem:hover {
+	opacity: .6;
+}

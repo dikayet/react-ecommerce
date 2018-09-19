@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import AsyncImage from '../AsyncImage/AsyncImage'; 
-import './Lightbox.css';
+import styles from './Lightbox.css';
 
 
 class Lightbox extends Component {
@@ -38,11 +38,11 @@ class Lightbox extends Component {
 
 	render() {
 		return (
-			<div className="lightbox">
-				<AsyncImage path={'icons/arrowLeft.png'} onClick={this.toLeft} className="arrowLeft" />
-				<AsyncImage path={'products/' + this.props.images[this.state.current] + '.jpg'} onClick={this.props.close.bind(this, this.state.current)} className="mainImage" />
-				<AsyncImage path={'icons/arrowRight.png'} onClick={this.toRight} className="arrowRight" />
-				<AsyncImage path={'icons/close.png'} onClick={this.props.close.bind(this, this.state.current)} className="lbExit" />
+			<div className={styles.lightbox}>
+				<AsyncImage path={'icons/arrowLeft.png'} onClick={this.toLeft} className={styles.left} />
+				<AsyncImage path={'products/' + this.props.images[this.state.current] + '.jpg'} onClick={this.props.close.bind(this, this.state.current)} className={styles.image} />
+				<AsyncImage path={'icons/arrowRight.png'} onClick={this.toRight} className={styles.right} />
+				<AsyncImage path={'icons/close.png'} onClick={this.props.close.bind(this, this.state.current)} className={styles.close} />
 			</div>
 		)
 	}

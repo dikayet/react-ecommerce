@@ -1,0 +1,41 @@
+.cartSummery {
+	float: right;
+	text-align: right;
+}
+
+#cartSection th {
+	font-size: 1.2em;
+	text-align: center;
+}
+.table {
+	width: 100%;
+	margin: 2rem 0;
+}
+.table td {
+	margin-top: 2rem;
+	text-align: center;
+}
+.table td:nth-child(4n) {
+	width: 8rem;
+}
+
+
+.cartSummery {
+	float: right;
+	text-align: right;
+	width: 50%;
+}
+
+
+#addToCart {
+	background-size: 2em;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.summaryFlex {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+	align-content: flex-start;
+}

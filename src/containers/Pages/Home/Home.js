@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import './Home.css';
+import styles from './Home.css';
 
 import Category from './Category/Category';
 
@@ -43,19 +43,20 @@ class Home extends Component {
 	}
 	
 	render() {
+		// const iframePlaceholder = <div style={{ backgroundColor: '#ccc', width: this.state.videoWidth, height: this.state.videoWidth / 1.77}}></div>;
 		return (
 			<Fragment>
-				<div className="home-categories">
+				<div className={styles.categories}>
 					{this.state.categories.map(el => (
 						<Category key={el[0]} text={el[0]} img={el[1]} path={el[2]} />
 					))}
 				</div>
-				<section className="video-home" ref={ref => this.videoContainer = ref} >
+				<section className={styles.videoHome} ref={ref => this.videoContainer = ref} >
 					<h2>Allow your style to match your ambition!</h2>
 					<iframe src="https://player.vimeo.com/video/225104384?byline=0&amp;portrait=0" width={this.state.videoWidth} height={this.state.videoWidth/1.77} frameBorder="0" title="video"></iframe>
 				</section>
 			</Fragment>
-		)
+		);
 	}
 }
 

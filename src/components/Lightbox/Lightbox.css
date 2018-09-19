@@ -14,7 +14,7 @@
 	touch-action: none;
 }
 
-.mainImage {
+.image {
 	height: 100vh;
 	width: auto;
 	margin: 0 auto;
@@ -22,7 +22,7 @@
 	cursor: zoom-out;
 }
 
-.lbExit {
+.close {
 	position: fixed;
 	top: 1rem;
 	right: 1rem;
@@ -33,25 +33,22 @@
 	width: auto;
 }
 
-.arrowLeft,
-.arrowRight {
+.left,
+.right {
 	position: fixed;
 	height: 6rem;
 	width: 6rem;
 	cursor: pointer;
 }
-.arrowRight {
+.right {
 	right: 0;
 }
-.arrowLeft {
+.left {
 	left: 0;
 }
 
-.arrowLeft:hover,
-.arrowRight:hover,
-.lbExit:hover,
-.thumbnailPreviewLeftArrow:hover,
-.thumbnailPreviewRightArrow:hover,
-.thumbnailPreviewCloseBtn:hover {
+.left:hover,
+.right:hover,
+.close:hover {
 	opacity: .6;
 }

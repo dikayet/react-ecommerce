@@ -1,10 +1,14 @@
 import React from 'react';
 
-import './Button.css';
+import styles from './Button.css';
 
 const Button = props => {
+	let btnClass = styles.bordered;
+	if (props.look) {
+		btnClass = styles[props.look]
+	}
 	return (
-		<button className="button-generic" {...props}>{props.children}</button>
+		<button className={btnClass} {...props}>{props.children}</button>
 	)
 }
 

@@ -1,20 +1,31 @@
-.product-container {
+.container {
 	display: flex;
+	justify-content: space-between;
 }
-
-.product-gallery {
+.legend {
+	padding: 1em;
+	font-size: 1em;
+}
+.gallery {
 	width: 50%;
 	margin-top: 2rem;
 }
-.product-content {
+.gallery img {
+	width: 100%;
+	cursor: zoom-in;
+}
+.gallery img:hover {
+	opacity: .6;
+}
+.content {
 	margin-left: 5%;
 	width: 45%;
 	margin-top: 2rem;
 }
-.product-content span {
+.content span {
 	font-size: 1.2em;
 }
-.product-content h2 {
+.content h2 {
 	margin: 0;
 	margin-bottom: 1.5rem;
 }
@@ -26,65 +37,63 @@
 .demonstration a {
 	text-decoration: underline;
 }
-.descProduct{
+.desc {
 	margin-top: 1.5rem;
 	line-height: 1.5em;
 	padding-bottom: 1.5rem;
 	border-bottom: 1px solid lightgrey;
 }
-.product-gallery img {
-	width: 100%;
-	cursor: zoom-in;
-}
-.sub-gallery {
+.subGallery {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 }
-.sub-gallery img {
+.subGallery img {
 	width: calc(90%/3);
 	cursor: pointer;
 	margin-right: 5%;
 	margin-top: 5%;
 }
-.sub-gallery img:nth-child(3n){
+.subGallery img:nth-child(3n){
 	margin-right: 0;
-}
-.product-gallery img:hover {
-	opacity: .6;
 }
 .details {
 	display: flex;
-	justify-content: space-between;
+	justify-content: left;
 	margin-top: 1.5rem;
 	margin-bottom: 1rem;
 }
-.select-group {
+.selectGroup {
 	margin-right: .5em;
 	display: flex;
 	flex-direction: column;
 }
-.select-group select {
+.selectGroup select {
 	font-size: 1em;
 }
-.product-content h2 {
-	margin-top: 0;
-}
 
-.input {
-	background-color: #f4f4f4;
-	-webkit-appearance: none;
-	border-radius: 0;
-	padding: 0.8em 1em;
-	padding-right: 2em;
-	border: none;
-	border-radius: 0;
-	background-image: url('../../../assets/icons/small-arrow-down.png');
-	background-position: right 10px center;
-	background-repeat: no-repeat;
-	background-size: .5em;
-}
 input.input {
 	background-image: none;
 }
 
+.containerButtons {
+	margin: 0 auto;
+}
+
+@media (max-width: 800px) {
+	.container {
+		flex-direction: column;
+		text-align: center;
+	}
+	.gallery {
+		width: 100%;
+	}
+	.content {
+		margin-left: 0;
+		width: 100%;
+		margin-top: 2rem;
+	}
+	.details {
+		justify-content: center;
+	}
+}

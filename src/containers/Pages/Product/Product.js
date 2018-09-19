@@ -1,15 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import firebase from '../../../firebase-init';
+import { connect } from 'react-redux';
 
-import { Link } from 'react-router-dom';
+import styles from './Product.css';
+import { categories } from '../../../shared/exports';
 
-import './Product.css';
+import { addToCart } from '../../../store/actions/cart';
 
 import CategoryMenu from '../../CategoryMenu/CategoryMenu';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import AsyncImage from '../../../components/AsyncImage/AsyncImage';
 import Lightbox from '../../../components/Lightbox/Lightbox';
-import { throws } from 'assert';
+import Legend from '../../../components/UI/Legend/Legend';
+import Button from '../../../components/UI/Button/Button';
+import Input from '../../../components/UI/Input/Input';
 
 const db = firebase.database();
 class Product extends Component {
@@ -22,7 +26,9 @@ class Product extends Component {
 		purchaseValues: {
 			size: '',
 			quant: 1
-		}
+		},
+		category: null,
+		addedToCart: false
 	}
 
 	getProduct = (id, color) => {
@@ -53,11 +59,20 @@ class Product extends Component {
 	}
 
 	componentDidMount(){
+		let category = this.getCategory(this.props.match.params.category);
+		this.setState({ category });
 		this.getProduct(this.props.match.params.id, this.props.match.params.color);
 	}
 	componentWillReceiveProps(nextProps){
-		if (this.props.match.params.color !== nextProps.match.params.color) {
+		let category = this.getCategory(nextProps.match.params.category);
+		this.setState({ category });
+		if (
+			this.props.match.params.color !== nextProps.match.params.color 
+			|| 
+			this.props.match.params.id !== nextProps.match.params.id
+			) {
 			this.getProduct(nextProps.match.params.id, nextProps.match.params.color);
+			this.setState({ addedToCart: false });
 		}
 	}
 
@@ -82,7 +97,8 @@ class Product extends Component {
 			purchaseValues: {
 				...this.state.purchaseValues,
 				[e.target.name]: e.target.value
-			}
+			},
+			addedToCart: false
 		});
 	}
 
@@ -97,6 +113,17 @@ class Product extends Component {
 		}
 	}
 
+	getCategory(link) {
+		let category;
+		for (let categ of categories) {
+			if (categ.link === link) {
+				category = categ;
+				break;
+			}
+		}
+		return category;
+	}
+
 	onColorChange = e => {
 		const id = this.props.match.params.id;
 		const category = this.props.match.params.category;
@@ -108,11 +135,16 @@ class Product extends Component {
 	addToCart = () => {
 		const data = {
 			id: this.state.product.id,
+			name: this.state.product.name,
 			color: this.state.product.color,
 			size: this.state.purchaseValues.size,
-			quant: this.state.purchaseValues.quant,
+			image: this.state.product.images[0],
+			category: this.state.product.category,
+			quant: 1,
+			price: this.state.product.price
 		}
-		console.log(data);
+		this.props.addToCart(data);
+		this.setState({ addedToCart: true });
 	}
 
 	render() {
@@ -125,58 +157,57 @@ class Product extends Component {
 		if (!this.state.loading) {
 			content = (
 				<Fragment>
-				<div className="legend">
-					<Link to="/">Home</Link>
-					<span> &gt; </span>
-					<Link to={'/' + this.props.match.params.category}>{this.props.match.params.category}</Link>
-					<span> &gt; </span>
-						<Link to={this.props.history.location.pathname}>{this.state.product.name}</Link>
-				</div>
+					<Legend elements={[
+						{ path: '/', text: 'Home', link: true },
+						{ path: '/' + this.state.category.link, text: this.state.category.name, link: true },
+						{ text: this.state.product.name, link: false },
+					]} />
 
 				{/*  */ }
 
-			<div className="flex-container product-container">
-				<div className="product-gallery">
+			<div className={styles.container}>
+				<div className={styles.gallery}>
 							<AsyncImage path={'products/' + this.state.product.images[this.state.currentImage] + '.jpg'} onClick={this.openLightbox}/>
-						<div className="sub-gallery" id="subGallery">
+						<div className={styles.subGallery}>
 						{this.state.product.images.map((img, index) => (
 									<AsyncImage key={img} path={'products/' + img + '.jpg'} onClick={this.setCurrentImage.bind(this, index)}/>
 						))}
 						</div>
 				</div>
-				<div className="product-content">
+				<div className={styles.content}>
 					<h2>{this.state.product.name}</h2>
 					<span>${this.state.product.price}</span>
-					<div className="details">
-						<div className="select-group">
+					<div className={styles.details}>
+						<div className={styles.selectGroup}>
 									<label htmlFor="color">Color</label>
-									<select className="input" name="color" id="color" onChange={this.onColorChange} defaultValue={this.state.product.color}>
+									<Input element="select" name="color" id="color" onChange={this.onColorChange} defaultValue={this.state.product.color}>
 								{this.state.product.options.map(option => (
 											<option key={option.color} value={option.color}>{option.color}</option>
 								))}
-							</select>
+							</Input>
 						</div>
-						<div className="select-group">
+						<div className={styles.selectGroup}>
 							<label htmlFor="size">Size</label>
-									<select className="input" name="size" onChange={this.updateValue} defaultValue={this.state.purchaseValues.size} id="size">
-										{this.state.product.sizes.map(size => (
-											<option disabled={size.quant === 0} key={size.size} value={size.size}>{size.size}{size.quant < 1 ? ' (out of stock)' : size.quant === 1 ? ' (last item)' : ''}</option>
-										))}
-							</select>
-						</div>
-						<div className="select-group">
-							<label htmlFor="size">Quantity</label>
-								<input className="input" onBlur={this.onQuantBlur} name="quant" type="number" id="productId" onChange={this.updateValue} value={this.state.purchaseValues.quant} />
+									<Input element="select" name="size" onChange={this.updateValue} defaultValue={this.state.purchaseValues.size} id="size">
+									{this.state.product.sizes.map(size => (
+										<option disabled={size.quant === 0} key={size.size} value={size.size}>{size.size}{size.quant < 1 ? ' (out of stock)' : size.quant === 1 ? ' (last item)' : ''}</option>
+									))}
+							</Input>
 						</div>
 					</div>
-					<div id="containerButtons">
-						<button className="btn" onClick={this.addToCart}>Add to cart</button>
+					<div className={styles.containerButtons} style={{marginTop: '2rem'}}>
+								{this.state.addedToCart ? (
+									<Fragment>
+										<Button look="solid" style={{marginRight: '.5rem'}} onClick={() => this.props.history.push('/cart')}>View Cart</Button>
+										<Button onClick={() => this.props.history.push('/all')}>Continue Shopping</Button>
+									</Fragment>
+								) : <Button onClick={this.addToCart}>Add to cart</Button>}
 					</div>
 
 
-					<p className="demonstration">This is a demonstration store. You can purchase products like this from <a href="https://www.spccstore.com" target="_blank">Sergeant Pepper Clothing Co.</a></p>
+					<p className={styles.demonstration}>This is a demonstration store. You can purchase products like this from <a href="https://www.spccstore.com" target="_blank" rel="noopener noreferrer">Sergeant Pepper Clothing Co.</a></p>
 
-					<p className="descProduct">{this.state.product.desc}</p>
+					<p className={styles.desc}>{this.state.product.desc}</p>
 				</div>
 			</div>
 			</Fragment>
@@ -190,4 +221,12 @@ class Product extends Component {
 	}
 }
 
-export default Product;
+const mapStateToProps = state => ({
+	cart: state.cart
+});
+
+const mapDispatchToProps = dispatch => ({
+	addToCart: (product) => dispatch(addToCart(product))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Product);

@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Link, withRouter} from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import './Navigation.css';
+import styles from './Navigation.css';
 
 import Wrapper from '../Wrapper/Wrapper';
 
@@ -15,7 +16,24 @@ class Navigation extends Component {
 		searching: false,
 		value: '',
 		mobileSearch: false,
-		searchPage: false
+		searchPage: false,
+		cartAmount: 0
+	}
+
+	componentDidMount(){
+		const nextNum = this.props.cart.reduce((sum, el) => sum + el.quant, 0);
+		console.log('CartNum', nextNum);
+		if (nextNum !== this.state.cartAmount) {
+			this.setState({ cartAmount: +nextNum });
+		}
+	}
+
+	componentWillReceiveProps(nextProps){
+		const nextNum = nextProps.cart.reduce((sum, el) => sum + el.quant, 0);
+		console.log('CartNum', nextNum);
+		if(nextNum !== this.state.cartAmount){
+			this.setState({ cartAmount: +nextNum });
+		}
 	}
 
 	onSearchChange = e => {
@@ -59,33 +77,34 @@ class Navigation extends Component {
 		let mobileSearch;
 		if (this.state.mobileSearch) {
 			mobileSearch = (
-				<form className="nav-top__search--mobile" onSubmit={this.onSearchSubmit}>
+				<form className={styles.searchForm} onSubmit={this.onSearchSubmit}>
 					<input type="text" autoFocus ref={ref => this.mobileInput = ref} />
 				</form>
 			);
 		}
 		return (
 			<Fragment>
-			<nav className="nav-top">
+				<nav className={styles.nav}>
 				<Wrapper>
-					<div className="nav-top__flex">
+					<div className={styles.flex}>
 						<Link to="/">
-							<img className="nav-top__logo" src={logo} alt="logo" />
+							<img className={styles.logo} src={logo} alt="logo" />
 						</Link>
 
 						{/* FOR MOBILE */}
-						<img onClick={this.onSearchClickMobile} className="nav-top__input-icon--mobile" src={inputIcon} alt="search_icon" />
-						<Link to="/cart" className="nav-top__cart-icon--mobile">
+						<img onClick={this.onSearchClickMobile} className={styles.searchIcon} src={inputIcon} alt="search_icon" />
+						<Link to="/cart" style={{position: 'relative'}} className={styles.cartIcon}>
 							<img src={cartIcon} alt="cart_icon" />
+								<span style={{position: 'absolute', top: '30%', left: '35%', fontWeight: '700'}}>{ this.state.cartAmount }</span>
 						</Link>
 
 						{/* FOR DESKTOP */}
-						<form onSubmit={this.onSearchSubmit} className="nav-top__input-container--desktop">
+							<form onSubmit={this.onSearchSubmit} className={styles.containerInput}>
 							<button type="submit">
-								<img onClick={this.onSearchClose} className="nav-top__input-icon" src={searchIcon} alt="search_icon" />
+									<img onClick={this.onSearchClose} className={styles.searchIcon_desktop} src={searchIcon} alt="search_icon" />
 							</button>
 							<input
-								className="nav-top__input"
+								className={styles.search}
 								type="text"
 								placeholder="Search"
 								value={this.state.value}
@@ -95,21 +114,24 @@ class Navigation extends Component {
 								ref={ref => this.searchInputRef = ref}
 								/>
 						</form>
-						<div className="nav-top__cart-container--desktop">
-							<img className="nav-top__cart-icon" src={cartIcon} alt="cart_icon" />
-							<span className="nav-top__cart-span">Cart(0)</span>
-						</div>
+						<Link to="/cart" className={styles.containerCart}>
+								<img className={styles.cartIcon_desktop} src={cartIcon} alt="cart_icon" />
+								<span className={styles.span}>Cart({this.state.cartAmount})</span>
+						</Link>
 
 					</div>
 
 				</Wrapper>
 				{mobileSearch}
 			</nav>
-			<div className="top-margin"></div>
+				<div className={styles.margin}></div>
 		</Fragment>
 		)
 	}
 }
 
+const mapStateToProps = state => ({
+	cart: state.cart.products
+});
 
-export default withRouter(Navigation);
+export default connect(mapStateToProps)(withRouter(Navigation));

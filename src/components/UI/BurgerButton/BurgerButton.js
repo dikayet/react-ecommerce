@@ -1,18 +1,18 @@
 import React from 'react';
 
-import './BurgerButton.css';
+import styles from './BurgerButton.css';
 
 const BurgerButton = props => {
-	const classes = ['BurgerButton'];
+	const classes = [styles.btn];
 	if (props.open) {
-		classes.push('open');
+		classes.push(styles.open);
 	}
 	return (
 		<div className={classes.join(' ')} {...props}>
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
+			<span className={styles.span1}></span>
+			<span className={styles.span1}></span>
+			<span className={styles.span1}></span>
+			<span className={styles.span1}></span>
 		</div>
 	)
 }

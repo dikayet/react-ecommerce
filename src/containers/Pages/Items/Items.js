@@ -1,89 +1,64 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from "../../../firebase-init";
-import axios from 'axios';
 
-import './Items.css';
+import styles from './Items.css';
+import { categories } from '../../../shared/exports';
 
 import CategoryMenu from '../../CategoryMenu/CategoryMenu';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import AsyncImage from '../../../components/AsyncImage/AsyncImage';
+import Legend from '../../../components/UI/Legend/Legend';
+import Input from '../../../components/UI/Input/Input';
 
 const db = firebase.database();
 
 class Items extends Component {
 	state = {
 		items: [],
-		loading: true
+		loading: true,
+		category: categories[0],
+		filter: 'bestselling'
 	}
 	componentDidMount(){
-		// let data = {
-		// 	name: 'Suede Combat Boots',
-		// 	category: 3,
-		// 	price: 799.95,
-		// 	desc: 'Featuring the COMBAT lace-up ankle boots. These shoes are made from 100% cow suede with soft leather lining for comfort. Construction details include an ankle high rise, waxed laces, tonal top stitching and a durable sole. An SPCC metal ingot is attached to the collar.',
-		// 	options: [
-		// 		{
-		// 			color: 'Stone',
-		// 			images: [
-		// 				'jacket1',
-		// 				'jacket2',
-		// 				'jacket3',
-		// 				'jacket4',
-		// 				'jacket5',
-		// 				'jacket6'
-		// 			],
-		// 			sizes: [
-		// 				{
-		// 					size: '6',
-		// 					quant: 18
-		// 				},
-		// 				{
-		// 					size: '8',
-		// 					quant: 3
-		// 				},
-		// 				{
-		// 					size: '10',
-		// 					quant: 3
-		// 				}
-		// 			]
-		// 		},
-		// 		{
-		// 			color: 'Grey',
-		// 			images: [
-		// 				'jacket1',
-		// 				'jacket2',
-		// 				'jacket3',
-		// 				'jacket4',
-		// 				'jacket5',
-		// 				'jacket6'
-		// 			],
-		// 			sizes: [
-		// 				{
-		// 					size: '6',
-		// 					quant: 18
-		// 				},
-		// 				{
-		// 					size: '12',
-		// 					quant: 3
-		// 				},
-		// 			]
-		// 		}
-		// 	]
-		// }
-		// axios.post('https://simple-14d89.firebaseio.com/items.json', data);
+		if (localStorage.getItem('filter')) {
+			this.setState({ filter: localStorage.getItem('filter') });
+			console.log('filter set');
+		}
+		const category = this.getCategory(this.props.match.params.category);
+		this.setState({ category });
 		this.setItems();
+	}
+
+	getCategory(link){
+		let category;
+		for (let categ of categories) {
+			if (categ.link === link) {
+				category = categ;
+				break;
+			}
+		}
+		return category;
 	}
 
 	setItems(){
 		this.setState({
-			loading: true
+			loading: true,
 		});
-		const testItems = db.ref('items').limitToFirst(20);
-		testItems.once('value', snapshot => {
+		const productItems = db.ref('items').limitToFirst(20);
+		switch (this.state.filter) {
+			case 'lowtohigh':
+				productItems.orderByChild('price');
+				console.log('case');
+				break;
+		
+			default:
+				break;
+		}
+		productItems.once('value', snapshot => {
 			const products = [];
 			snapshot.forEach(child => {
-				if (this.props.match.params.category === 'outwear' || this.props.match.params.category === 'all') {
+				if (this.props.match.params.category === categories[child.val().category].link || this.props.match.params.category === 'all') {
 					child.val().options.forEach(option => {
 						products.push({
 							id: child.key + '/' + option.color,
@@ -104,13 +79,22 @@ class Items extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.location !== prevProps.location) {
+		if (this.props.location !== prevProps.location || this.state.filter !== prevState.filter) {
 			this.setItems();
+			const category = this.getCategory(this.props.match.params.category);
+			this.setState({ category });
 		}
 	}
 
 	getImage = (image) => {
 		return import('../../../assets/products/' + image + '.jpg');
+	}
+
+	changeFilter = e => {
+		this.setState({
+			filter: e.target.value
+		});
+		localStorage.setItem('filter', e.target.value);
 	}
 
 
@@ -121,28 +105,27 @@ class Items extends Component {
 		if (!this.state.loading) {
 			const test = Array.from(this.state.items);
 			content = test.map(el => (
-				<div key={el.id} className="product">
-					<Link to={'/' + this.props.match.params.category + '/' + el.id}><AsyncImage path={'products/' + el.image + '.jpg'}/></Link>
-					<h5><Link to={'/' + this.props.match.params.category + '/' + el.id}>{el.name} - {el.color}</Link></h5>
+				<div key={el.id} className={styles.product}>
+					<Link to={'/' + categories[el.category].link + '/' + el.id}><AsyncImage path={'products/' + el.image + '.jpg'}/></Link>
+					<h5><Link to={'/' + this.state.category.link + '/' + el.id}>{el.name} - {el.color}</Link></h5>
 					<span>${el.price}</span>
 				</div>
 			));
 		}
 		return (
 				<CategoryMenu>
-						<div className="legend">
-							<Link to="/">Home</Link>
-							<span> &gt; </span>
-							<Link to={this.props.match.params.category}>{this.props.match.params.category}</Link>
-						</div>
-				<div className="filter">
-					<h2>{this.props.match.params.category}</h2>
-					<select defaultValue="lowtohigh_3" id="productsFilter">
-						<option value="featured_3">Featured</option>
-						<option value="bestselling_3">Best Selling</option>
-						<option value="lowtohigh_3">Price: low to high</option>
-						<option value="hightolow_3">Price: high to low</option>
-					</select>
+				<Legend elements={[
+					{ path: '/', text: 'Home', link: true },
+					{ text: this.state.category.name, link: false },
+				]} />
+				<div className={styles.filter}>
+					<h2>{this.state.category.name}</h2>
+					<Input element="select" value={this.state.filter} onChange={this.changeFilter}>
+						<option value="featured">Featured</option>
+						<option value="bestselling">Best Selling</option>
+						<option value="lowtohigh">Price: low to high</option>
+						<option value="hightolow">Price: high to low</option>
+					</Input>
 				</div>
 						{content}
 				</CategoryMenu>
