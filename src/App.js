@@ -15,7 +15,6 @@ class App extends Component {
   componentDidMount(){
     if (localStorage.getItem('cart')) {
       this.props.setCart(localStorage.getItem('cart'));
-      console.log('cart exists');
     }
   }
   scrollToTop = () => {
@@ -29,6 +28,7 @@ class App extends Component {
           <Switch>
             <Route path="/cart" component={Cart} onEnter={this.scrollToTop}/>
             <Route path="/:category/:id/:color" component={Product} onEnter={this.scrollToTop}/>
+            <Route path="/:category/:query" component={Items} onEnter={this.scrollToTop}/>
             <Route path="/:category" component={Items} onEnter={this.scrollToTop}/>
             <Route path="/" component={Home} onEnter={this.scrollToTop}/>
           </Switch>

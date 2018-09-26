@@ -37,7 +37,7 @@ class Layout extends Component {
 								<Input element="input" type="email" placeholder="Your Email" />
 							</div>
 							<div className={styles.button}>
-								<Button look="solid" style={{width: '100%', height: '100%'}} type="submit">Subscribe</Button>
+								<Button look="solid" type="submit">Subscribe</Button>
 							</div>
 						</form>
 					</div>

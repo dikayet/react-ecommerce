@@ -23,39 +23,40 @@ class Product extends Component {
 		loading: true,
 		lightbox: false,
 		currentImage: 0,
-		purchaseValues: {
-			size: '',
-			quant: 1
-		},
+		currentSize: 'abc',
 		category: null,
-		addedToCart: false
+		addedToCart: false,
+		maxQuant: 0
 	}
 
 	getProduct = (id, color) => {
 		db.ref('items/' + id).once('value').then(snapshot => {
 			const option = snapshot.val().options.find(el => el.color === color);
 			const product = {
-				...snapshot.val(),
 				id: snapshot.key,
+				name: snapshot.val().name,
+				category: snapshot.val().category,
+				price: snapshot.val().price,
+				options: snapshot.val().options,
 				color,
 				sizes: option.sizes,
 				images: option.images
 			};
-			let initSize;
-			for(let size of option.sizes){
-				if (size.quant > 0) {
-					initSize = size.size
+			document.title = product.name + ' - ' + product.color;
+			let currentSize = option.sizes[0];
+			for (let size of option.sizes) {
+				if (size.quant > this.checkAvailability(product.id, product.color, size)) {
+					currentSize = size.size
+					break;
 				}
 			}
 			this.setState({
 				product,
 				loading: false,
-				purchaseValues: {
-					...this.state.purchaseValues,
-					size: initSize
-				}
+				currentSize
 			});
 		});
+		
 	}
 
 	componentDidMount(){
@@ -63,6 +64,7 @@ class Product extends Component {
 		this.setState({ category });
 		this.getProduct(this.props.match.params.id, this.props.match.params.color);
 	}
+
 	componentWillReceiveProps(nextProps){
 		let category = this.getCategory(nextProps.match.params.category);
 		this.setState({ category });
@@ -94,23 +96,9 @@ class Product extends Component {
 
 	updateValue = e => {
 		this.setState({
-			purchaseValues: {
-				...this.state.purchaseValues,
-				[e.target.name]: e.target.value
-			},
+			currentSize: e.target.value,
 			addedToCart: false
 		});
-	}
-
-	onQuantBlur = e => {
-		if (e.target.value === '') {
-			this.setState({
-				purchaseValues: {
-					...this.state.purchaseValues,
-					quant: 1
-				}
-			});
-		}
 	}
 
 	getCategory(link) {
@@ -128,23 +116,34 @@ class Product extends Component {
 		const id = this.props.match.params.id;
 		const category = this.props.match.params.category;
 		const color = e.target.value;
-		console.log('/' + category + '/' + id + '/' + color);
 		this.props.history.push('/' + category + '/' + id + '/' + color);
 	}
 
 	addToCart = () => {
+		let initQuant = this.state.product.sizes.find(el => el.size === this.state.currentSize).quant;
+		console.log(initQuant);
 		const data = {
 			id: this.state.product.id,
 			name: this.state.product.name,
 			color: this.state.product.color,
-			size: this.state.purchaseValues.size,
+			size: this.state.currentSize,
 			image: this.state.product.images[0],
 			category: this.state.product.category,
 			quant: 1,
+			initQuant,
 			price: this.state.product.price
 		}
 		this.props.addToCart(data);
 		this.setState({ addedToCart: true });
+	}
+
+	checkAvailability = (id, color, size) => {
+		const productInCart = this.props.cart.find(el => (el.id === id) && (el.size === size.size) && (el.color === color));
+		let quant = 0;
+		if (productInCart) {
+			quant += productInCart.quant;
+		}
+		return quant;
 	}
 
 	render() {
@@ -154,7 +153,19 @@ class Product extends Component {
 				<Lightbox images={this.state.product.images} close={this.closeLightbox} current={this.state.currentImage}/>
 			);
 		}
+		
 		if (!this.state.loading) {
+			let imgStyle = null;
+			if (this.state.product.images.length % 4 === 0) {
+				let margin = 3;
+				let width = (100 - (margin * 3)) / 4;
+				imgStyle = {
+					width: width + '%',
+					marginRight: margin + '%'
+				}
+			}
+			const currentSize = this.state.product.sizes.find(el => el.size === this.state.currentSize);
+			const btnDisabled = this.checkAvailability(this.state.product.id, this.state.product.color, currentSize) >= this.state.product.sizes.find(el => el.size === currentSize.size).quant;
 			content = (
 				<Fragment>
 					<Legend elements={[
@@ -170,7 +181,7 @@ class Product extends Component {
 							<AsyncImage path={'products/' + this.state.product.images[this.state.currentImage] + '.jpg'} onClick={this.openLightbox}/>
 						<div className={styles.subGallery}>
 						{this.state.product.images.map((img, index) => (
-									<AsyncImage key={img} path={'products/' + img + '.jpg'} onClick={this.setCurrentImage.bind(this, index)}/>
+									<AsyncImage style={(index+1) % 4 !== 0 || imgStyle === null ? imgStyle : { ...imgStyle, marginRight: '0'}} key={img} path={'products/' + img + '.jpg'} onClick={this.setCurrentImage.bind(this, index)}/>
 						))}
 						</div>
 				</div>
@@ -188,10 +199,12 @@ class Product extends Component {
 						</div>
 						<div className={styles.selectGroup}>
 							<label htmlFor="size">Size</label>
-									<Input element="select" name="size" onChange={this.updateValue} defaultValue={this.state.purchaseValues.size} id="size">
-									{this.state.product.sizes.map(size => (
-										<option disabled={size.quant === 0} key={size.size} value={size.size}>{size.size}{size.quant < 1 ? ' (out of stock)' : size.quant === 1 ? ' (last item)' : ''}</option>
-									))}
+									<Input element="select" name="size" onChange={this.updateValue} defaultValue={this.state.currentSize} id="size">
+									{this.state.product.sizes.map(size => {
+										let quantInCart = this.checkAvailability(this.state.product.id, this.state.product.color, size);
+										return (
+											<option disabled={quantInCart >= size.quant} key={size.size} value={size.size}>{size.size}{quantInCart >= size.quant ? ' (out of stock)' : quantInCart + 1 === size.quant ? ' (last item)' : ''}</option>
+									)})}
 							</Input>
 						</div>
 					</div>
@@ -201,7 +214,7 @@ class Product extends Component {
 										<Button look="solid" style={{marginRight: '.5rem'}} onClick={() => this.props.history.push('/cart')}>View Cart</Button>
 										<Button onClick={() => this.props.history.push('/all')}>Continue Shopping</Button>
 									</Fragment>
-								) : <Button onClick={this.addToCart}>Add to cart</Button>}
+								) : <Button disabled={btnDisabled} onClick={this.addToCart}>Add to cart</Button>}
 					</div>
 
 
@@ -222,7 +235,7 @@ class Product extends Component {
 }
 
 const mapStateToProps = state => ({
-	cart: state.cart
+	cart: state.cart.products
 });
 
 const mapDispatchToProps = dispatch => ({

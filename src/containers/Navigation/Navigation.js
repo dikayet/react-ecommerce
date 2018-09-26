@@ -22,7 +22,6 @@ class Navigation extends Component {
 
 	componentDidMount(){
 		const nextNum = this.props.cart.reduce((sum, el) => sum + el.quant, 0);
-		console.log('CartNum', nextNum);
 		if (nextNum !== this.state.cartAmount) {
 			this.setState({ cartAmount: +nextNum });
 		}
@@ -30,7 +29,6 @@ class Navigation extends Component {
 
 	componentWillReceiveProps(nextProps){
 		const nextNum = nextProps.cart.reduce((sum, el) => sum + el.quant, 0);
-		console.log('CartNum', nextNum);
 		if(nextNum !== this.state.cartAmount){
 			this.setState({ cartAmount: +nextNum });
 		}
@@ -61,8 +59,8 @@ class Navigation extends Component {
 
 	onSearchSubmit = e => {
 		e.preventDefault();
+		if (this.state.value.length < 1) return;
 		this.props.history.push('/search/' + encodeURIComponent(this.state.value));
-		console.log(this.searchInputRef.value);
 		this.setState({
 			value: '',
 			searching: false,
@@ -95,7 +93,7 @@ class Navigation extends Component {
 						<img onClick={this.onSearchClickMobile} className={styles.searchIcon} src={inputIcon} alt="search_icon" />
 						<Link to="/cart" style={{position: 'relative'}} className={styles.cartIcon}>
 							<img src={cartIcon} alt="cart_icon" />
-								<span style={{position: 'absolute', top: '30%', left: '35%', fontWeight: '700'}}>{ this.state.cartAmount }</span>
+								<div><span>{ this.state.cartAmount }</span></div>
 						</Link>
 
 						{/* FOR DESKTOP */}
@@ -116,7 +114,7 @@ class Navigation extends Component {
 						</form>
 						<Link to="/cart" className={styles.containerCart}>
 								<img className={styles.cartIcon_desktop} src={cartIcon} alt="cart_icon" />
-								<span className={styles.span}>Cart({this.state.cartAmount})</span>
+								<span className={styles.span}>Cart <span style={{fontWeight: '700', fontSize: '1.1rem'}}>{this.state.cartAmount}</span></span>
 						</Link>
 
 					</div>

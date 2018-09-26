@@ -6,11 +6,11 @@ const Input = props => {
 	switch (props.element) {
 		case 'input':
 			return (
-				<input className={styles.email} {...props}/>
+				<input className={styles.input} {...props}/>
 			);
 		case 'textarea':
 		return (
-			<teaxtarea className={styles.email} {...props}>{props.children}</teaxtarea>
+			<textarea className={styles.input} {...props}>{props.children}</textarea>
 			);
 		case 'select':
 			return (

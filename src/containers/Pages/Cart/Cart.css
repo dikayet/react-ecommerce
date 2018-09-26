@@ -1,41 +1,47 @@
-.cartSummery {
-	float: right;
-	text-align: right;
-}
-
-#cartSection th {
-	font-size: 1.2em;
-	text-align: center;
-}
-.table {
+.headings {
 	width: 100%;
 	margin: 2rem 0;
-}
-.table td {
-	margin-top: 2rem;
 	text-align: center;
 }
+.headings th:first-child {
+	text-align: left;
+}
+
 .table td:nth-child(4n) {
 	width: 8rem;
 }
 
 
+.summaryFlex {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-content: flex-start;
+}
+.summaryFlex label {
+	font-size: .8rem;
+}
 .cartSummery {
-	float: right;
 	text-align: right;
 	width: 50%;
 }
-
-
-#addToCart {
-	background-size: 2em;
-	background-position: center;
-	background-repeat: no-repeat;
+.cartSummery button:first-child {
+	margin-bottom: 1rem;
 }
 
-.summaryFlex {
-	display: flex;
-	flex-direction: row-reverse;
-	justify-content: space-between;
-	align-content: flex-start;
+@media (max-width: 800px) {
+	thead {
+		display: none;
+	}
+	.summaryFlex {
+		flex-direction: column;
+	}
+	.cartSummery {
+		text-align: center;
+		width: 100%;
+		margin-top: 1rem;
+	}
+	.cartSummery button {
+		margin-bottom: 0;
+	}
 }

@@ -28,6 +28,7 @@ class Home extends Component {
 		videoWidth: null
 	}
 	componentDidMount(){
+		document.title = 'Home';
 		let width;
 		this.interval = setInterval(() => {
 			width = this.videoContainer.offsetWidth;

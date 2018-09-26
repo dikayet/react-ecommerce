@@ -30,7 +30,6 @@ const addProduct = (state, product) => {
 	if (!inCart) {
 		newProducts.push(product);
 	}
-	console.log(newProducts);
 	toSession(JSON.stringify(newProducts));
 	return updateObject(state, {
 		products: newProducts
@@ -39,7 +38,6 @@ const addProduct = (state, product) => {
 
 const removeProduct = (state, index) => {
 	let newProducts = state.products.filter((el, i) => i!==index);
-	console.log(index, state.products);
 	toSession(JSON.stringify(newProducts));
 	return updateObject(state, {
 		products: newProducts
@@ -47,7 +45,6 @@ const removeProduct = (state, index) => {
 }
 
 const setCart = (state, cart) => {
-	console.log('setting car', JSON.parse(cart));
 	return updateObject(state, {
 		products: JSON.parse(cart)
 	});

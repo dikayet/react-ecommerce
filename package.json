@@ -2,7 +2,7 @@
   "name": "react-simple",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://dikayet.github.io/",
+  "homepage": "https://dikayet.github.io/simple",
   "dependencies": {
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
@@ -42,6 +42,7 @@
     "react-dom": "^16.5.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
+    "react-transition-group": "^2.4.0",
     "redux": "^4.0.0",
     "resolve": "1.6.0",
     "style-loader": "0.19.0",
@@ -56,6 +57,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "jest": {

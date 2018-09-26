@@ -1,12 +1,16 @@
-.email {
+.input {
 	width: 100%;
 	background-color: #eee;
-	padding: 1em .5em;
+	padding: .8em .5em;
 	margin-right: -.5em;
 	text-align: center;
 	font-size: 1rem;
 	border: none;
 	box-sizing: border-box;
+	text-align: left;
+}
+.input:focus, .select:focus {
+	outline: none;
 }
 .select {
 	background-color: #f4f4f4;
@@ -21,4 +25,5 @@
 	background-repeat: no-repeat;
 	background-size: .5em;
 	cursor: pointer;
+	font-size: 1rem;
 }

@@ -1,12 +1,11 @@
 .bordered {
 	background-color: #fff;
 	border-radius: 0;
-	border: .15em solid #222;
-	padding: .5em 1.4em;
+	border: 2px solid #222;
+	padding: .65rem 1.4rem;
 	text-transform: uppercase;
 	color: #222;
 	opacity: 1;
-	font-family: 'Open Sans';
 	display: inline-block;
 	transition: all .1s ease-in-out;
 	cursor: pointer;
@@ -21,12 +20,11 @@
 .solid {
 	background-color: #222;
 	border-radius: 0;
-	border: .15em solid #222;
-	padding: .5em 1.4em;
+	border: 2px solid #222;
+	padding: .65rem 1.4rem;
 	text-transform: uppercase;
 	color: #fff;
 	opacity: 1;
-	font-family: Open Sans;
 	display: inline-block;
 	transition: all .1s ease-in-out;
 	cursor: pointer;

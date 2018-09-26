@@ -4,6 +4,7 @@
 .productTDtitle {
 	width: 80%;
 	text-align: left !important;
+	display: flex;
 }
 .productTDtitle img{
 	height: 15rem;
@@ -49,4 +50,48 @@
 }
 .removeCartItem:hover {
 	opacity: .6;
+}
+.price span, .subTotal span, .tdInput span {
+		display: none;
+}
+.subTotal {
+	font-weight: 700;
+}
+
+@media (max-width: 800px){
+	tr {
+		display: flex;
+		flex-direction: column;
+		border-bottom: 1px solid #eee;
+		padding-bottom: 3rem;
+		margin-bottom: 2rem;
+	}
+	.productTDtitle {
+		flex-direction: column;
+		width: 80%;
+		margin: 0 auto;
+	}
+	.productTDtitle img {
+		height: auto;
+		width: 100%;
+	}
+	.productTDtitle .container {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		margin-bottom: 3rem;
+	}
+	.price span, .subTotal span, .tdInput span {
+		display: inline;
+	}
+	.price, .subTotal, .tdInput {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: .5rem 0;
+	}
+	.tdInput input {
+		margin: 1rem 0 !important;
+		font-size: 1.3rem;
+	}
 }
