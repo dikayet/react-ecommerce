@@ -10,6 +10,7 @@ import Home from './containers/Pages/Home/Home';
 import Items from './containers/Pages/Items/Items';
 import Product from './containers/Pages/Product/Product';
 import Cart from './containers/Pages/Cart/Cart';
+import Msg from './containers/Pages/Msg/Msg';
 
 class App extends Component {
   componentDidMount(){
@@ -27,6 +28,7 @@ class App extends Component {
         <Layout>
           <Switch>
             <Route path="/cart" component={Cart} onEnter={this.scrollToTop}/>
+            <Route path="/msg/:msg" component={Msg} onEnter={this.scrollToTop}/>
             <Route path="/:category/:id/:color" component={Product} onEnter={this.scrollToTop}/>
             <Route path="/:category/:query" component={Items} onEnter={this.scrollToTop}/>
             <Route path="/:category" component={Items} onEnter={this.scrollToTop}/>

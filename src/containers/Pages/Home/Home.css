@@ -3,3 +3,9 @@
 	flex-wrap: wrap;
 	margin-bottom: 5rem;
 }
+
+@media (max-width: 800px) {
+	.categories {
+		margin-top: 3rem;
+	}
+}

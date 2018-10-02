@@ -7,55 +7,55 @@ import CategoryMenu from '../../CategoryMenu/CategoryMenu';
 import Legend from '../../../components/UI/Legend/Legend';
 import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 import CartItem from './CartItem/CartItem';
 
 
 import { addToCart, removeFromCart, changeProductQuant } from '../../../store/actions/cart';
 
-// import firebase from 'firebase';
-// const db = firebase.database();
+import firebase from 'firebase';
+const db = firebase.database();
 
 class Cart extends Component {
 
 	state = {
 		products: [],
-		// loading: true,
+		loading: true,
 	}
 
 	componentDidMount(){
 		document.title = 'Cart';
+		this.setProducts();
 	}
 
-	componentDidUpdate(){
-	// 	console.log('updating', this.state);
-	// 	if (this.state.products.length < 1) {
-	// 		let index = 0;
-	// 		console.log('inside')
-	// 		for (let el of this.props.cart) {
-	// 			db.ref('items/' + el.id).once('value').then(snapshot => {
-	// 				let product = snapshot.val();
-	// 				let option = product.options.find(op => op.color === el.color);
-	// 				let size = option.sizes.find(sz => sz.size === el.size)
-	// 					let newProduct = {
-	// 						id: el.id,
-	// 						color: el.color,
-	// 						price: el.price,
-	// 						size: size,
-	// 						image: option.images[0]
-	// 					};
-	// 					console.log(newProduct);
-	// 					let loading = index !== this.props.cart.length - 1;
-	// 					this.setState({
-	// 						products: [
-	// 							...this.state.products,
-	// 							newProduct
-	// 						]
-	// 					});	
-	// 			})
-	// 			index++;
-	// 		}
-	// 	}
-	// 	// console.log('updating');
+	setProducts = () => {
+		db.ref('items').once('value', snapshot => {
+			let productArr = [];
+			snapshot.forEach(child => {
+				let product = child.val();
+				for (let el of this.props.cart) {
+					if (child.key === el.id) {
+						let option = product.options.find(op => op.color === el.color);
+						let size = option.sizes.find(sz => sz.size === el.size);
+						let newProduct = {
+							id: el.id,
+							name: product.name,
+							color: el.color,
+							category: product.category,
+							price: product.price,
+							size,
+							quant: el.quant,
+							image: option.images[0]
+						};
+						productArr.push(newProduct);
+					}
+				}
+			});
+			this.setState({
+				loading: false,
+				products: productArr
+			});
+		});
 	}
 
 	changeQuant = (index, e) => {
@@ -66,24 +66,23 @@ class Cart extends Component {
 	removeFromCart = index => {
 		// setTimeout(() => {
 		// }, 200);
+		let newProducts = this.state.products.filter((el, i) => index !== i);
+		this.setState({
+			products: newProducts
+		});
 		this.props.removeFromCart(index);
 	}
 	
 	render(){
-		let products = null;
-		if (this.props.cart.length > 0) {
-			products = this.props.cart.map((el, index) => (
-				<CartItem key={el.id + el.color} el={el} index={index} remove={this.removeFromCart} change={this.changeQuant}/>
-			));	
-		}
-		return (
-				<CategoryMenu>
-					<Legend elements={[
-						{ path: '/', text: 'Home', link: true },
-						{ text: 'Cart', link: false },
-					]}/>
-
-				{this.props.cart.length < 1 ? <p style={{textAlign: 'center', marginTop: '15%'}}>Cart Is Empty</p> : (
+		console.log('render');
+		let content = <Spinner />;
+		if (!this.state.loading) {
+			if (this.state.products.length > 0) {
+				let products = null;
+				products = this.state.products.map((el, index) => (
+					<CartItem key={el.id + el.color + el.size.size} el={el} index={index} remove={this.removeFromCart} change={this.changeQuant} />
+				));
+				content = (
 					<Fragment>
 						<table className={styles.headings}>
 							<thead>
@@ -93,32 +92,49 @@ class Cart extends Component {
 									<th>Quantity</th>
 									<th>Total</th>
 								</tr>
-						</thead>
-						<tbody>
-							{products}
-						</tbody>
-					</table>
-					<div className="mobile">
+							</thead>
+							<tbody>
+								{products}
+							</tbody>
+						</table>
+						<div className="mobile">
 
-					</div>
+						</div>
 
-					<div className={styles.summaryFlex}>
-							<div className={styles.formGroup} style={{marginTop: '2rem'}}>
+						<div className={styles.summaryFlex}>
+							<div className={styles.formGroup} style={{ marginTop: '2rem' }}>
 								<label htmlFor="instruct">Special instructions for seller (Optional)</label>
 								<Input element="textarea" cols="70" rows="6"></Input>
 							</div>
 							<div className={styles.cartSummery}>
-								<h2 id="totalSum">Total: ${this.props.cart.reduce((sum, el) => sum + (el.price * el.quant), 0).toFixed(2)}</h2>
+								<h2 id="totalSum">Total: ${this.state.products.reduce((sum, el, index) => sum + (el.price * this.props.cart[index].quant), 0).toFixed(2)}</h2>
 								<p>Shipping &amp; taxes calculated at checkout</p>
 								<div>
 									<Button onClick={() => this.props.history.push('/all')}>continue shopping</Button>
-									<Button look="solid" onClick={() => this.props.history.push('/checkout')}>checkout</Button>
+									<Button look="solid" onClick={() => this.props.history.push('/msg/checkout')}>checkout</Button>
 								</div>
 							</div>
 							<br />
-					</div>
+						</div>
 					</Fragment>
-				)}
+				);
+			} else {
+				content = (
+					<div style={{ textAlign: 'center', marginTop: '10%' }}>
+						<p>Cart Is Empty</p>
+						<Button style={{ margin: '0 auto' }} onClick={() => this.props.history.push('/all')}>Start Shopping</Button>
+					</div>
+				);
+			}
+		}
+		return (
+				<CategoryMenu>
+					<Legend elements={[
+						{ path: '/', text: 'Home', link: true },
+						{ text: 'Cart', link: false },
+					]}/>
+
+				{content}
 				
 				</CategoryMenu>
 			)

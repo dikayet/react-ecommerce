@@ -1,5 +1,6 @@
 .container {
 	width: 23%;
+	overflow: hidden;
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -13,9 +14,13 @@
 }
 .container img {
 	width: 100%;
+	transition: .2s ease-in-out;
 }
 .container:hover {
 	opacity: 1;
+}
+.container:hover img {
+	transform: scale(1.1);
 }
 .text {
 	position: absolute;

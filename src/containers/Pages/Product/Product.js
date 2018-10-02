@@ -36,6 +36,7 @@ class Product extends Component {
 				id: snapshot.key,
 				name: snapshot.val().name,
 				category: snapshot.val().category,
+				desc: snapshot.val().desc,
 				price: snapshot.val().price,
 				options: snapshot.val().options,
 				color,
@@ -120,18 +121,11 @@ class Product extends Component {
 	}
 
 	addToCart = () => {
-		let initQuant = this.state.product.sizes.find(el => el.size === this.state.currentSize).quant;
-		console.log(initQuant);
 		const data = {
 			id: this.state.product.id,
-			name: this.state.product.name,
 			color: this.state.product.color,
 			size: this.state.currentSize,
-			image: this.state.product.images[0],
-			category: this.state.product.category,
-			quant: 1,
-			initQuant,
-			price: this.state.product.price
+			quant: 1
 		}
 		this.props.addToCart(data);
 		this.setState({ addedToCart: true });

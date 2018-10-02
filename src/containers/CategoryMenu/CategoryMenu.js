@@ -31,7 +31,7 @@ class CategoryMenu extends Component {
 		return (
 			<div className={styles.container}>
 				<div className={styles.mobile}>
-					<BurgerButton style={{marginBottom: '1.8rem'}} onClick={this.toggleMenu} open={this.state.open}/>
+					<BurgerButton onClick={this.toggleMenu} open={this.state.open}/>
 					{this.state.open ? categoriesList : null}
 				</div>
 				<div className={styles.desktop}>

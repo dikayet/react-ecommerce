@@ -38,8 +38,9 @@
 	flex-direction: column;
 }
 
-footer {
+footer p {
 	margin-top: 4rem;
+	padding-top: .5rem;
 	border-top: 1px solid lightgrey;
 	font-size: .7em;
 	flex-shrink: 0;
@@ -63,7 +64,7 @@ footer {
 		margin: 0;
 	}
 	.input input {
-		text-align: left;
+		text-align: center;
 	}
 }
 

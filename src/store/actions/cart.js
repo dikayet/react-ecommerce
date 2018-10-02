@@ -16,3 +16,6 @@ export const setCart = products => ({
 	type: actionTypes.CART_SET,
 	payload: products
 })
+export const cartDiscard = products => ({
+	type: actionTypes.CART_DISCARD
+})

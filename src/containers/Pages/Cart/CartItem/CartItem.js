@@ -15,7 +15,8 @@ class CartItem extends Component {
 	state = {
 		alert: false,
 		value: 1,
-		price: 0
+		price: 0,
+		preRemove: false
 	}
 
 	componentDidMount(){
@@ -32,11 +33,11 @@ class CartItem extends Component {
 	}
 
 	changeQuant = (index, e) => {
-		if (e.target.value > this.props.el.initQuant) {
+		if (e.target.value > this.props.el.size.quant) {
 			this.setState({
 				alert: true,
-				value: this.props.el.initQuant,
-				price: this.props.el.initQuant*this.props.el.price
+				value: this.props.el.size.quant,
+				price: this.props.el.size.quant*this.props.el.price
 			});
 			return;
 		}
@@ -60,18 +61,31 @@ class CartItem extends Component {
 		})
 	}
 
+	remove = () => {
+		this.setState({
+			preRemove: true
+		});
+		setTimeout(() => {
+			this.props.remove(this.props.index);
+		}, 150);
+	}
+
 	render(){
+		let removeClass = null;
+		if(this.state.preRemove){
+			removeClass = styles.removeAnim;
+		}
 		return (
 			<Fragment>
-			<tr>
+			<tr className={removeClass}>
 				<td className={styles.productTDtitle}>
 					<Link to={'/' + categories[this.props.el.category].link + '/' + this.props.el.id + '/' + this.props.el.color}><AsyncImage path={'products/' + this.props.el.image + '.jpg'} /></Link>
 					<div className={styles.container}>
 						<Link to={'/' + categories[this.props.el.category].link + '/' + this.props.el.id + '/' + this.props.el.color}>
 							<h4>{this.props.el.name}</h4>
 						</Link>
-						<span>{this.props.el.color}/{this.props.el.size}</span>
-						<span style={{display: 'flex'}} className={styles.removeCartItem} onClick={this.props.remove.bind(this, this.props.index)}><img src={deleteIcon} alt="remove_product" style={{height: '1rem', marginRight: '.3rem', width: 'auto'}}/>Remove</span>
+						<span>{this.props.el.color}/{this.props.el.size.size}</span>
+						<span style={{display: 'flex'}} className={styles.removeCartItem} onClick={this.remove}><img src={deleteIcon} alt="remove_product" style={{height: '1rem', marginRight: '.3rem', width: 'auto'}}/>Remove</span>
 					</div>
 				</td>
 				<td className={styles.price}><span>Price</span>${this.props.el.price}</td>

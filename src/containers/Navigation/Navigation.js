@@ -76,7 +76,7 @@ class Navigation extends Component {
 		if (this.state.mobileSearch) {
 			mobileSearch = (
 				<form className={styles.searchForm} onSubmit={this.onSearchSubmit}>
-					<input type="text" autoFocus ref={ref => this.mobileInput = ref} />
+					<input type="text" autoFocus ref={ref => this.mobileInput = ref} onChange={this.onSearchChange} />
 				</form>
 			);
 		}
@@ -97,7 +97,7 @@ class Navigation extends Component {
 						</Link>
 
 						{/* FOR DESKTOP */}
-							<form onSubmit={this.onSearchSubmit} className={styles.containerInput}>
+						<form onSubmit={this.onSearchSubmit} className={styles.containerInput}>
 							<button type="submit">
 									<img onClick={this.onSearchClose} className={styles.searchIcon_desktop} src={searchIcon} alt="search_icon" />
 							</button>
@@ -114,17 +114,16 @@ class Navigation extends Component {
 						</form>
 						<Link to="/cart" className={styles.containerCart}>
 								<img className={styles.cartIcon_desktop} src={cartIcon} alt="cart_icon" />
-								<span className={styles.span}>Cart <span style={{fontWeight: '700', fontSize: '1.1rem'}}>{this.state.cartAmount}</span></span>
+								<div style={{ display: 'flex', flexWrap: 'nowrap' }} className={styles.span}><span style={{marginRight: '.4rem'}}>Cart</span><span style={{fontWeight: '700', fontSize: '1.1rem'}}>{this.state.cartAmount}</span></div>
 						</Link>
 
 					</div>
-
+					{mobileSearch}
 				</Wrapper>
-				{mobileSearch}
 			</nav>
 				<div className={styles.margin}></div>
 		</Fragment>
-		)
+		);
 	}
 }
 

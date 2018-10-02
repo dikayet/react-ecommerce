@@ -26,11 +26,11 @@
 	position: fixed;
 	top: 1rem;
 	right: 1rem;
-	z-index: 101;
-	padding: 1rem 2rem;
+	z-index: 110;
 	cursor: pointer;
-	height: 1.5rem;
+	height: 60px;
 	width: auto;
+	opacity: 1;
 }
 
 .left,
@@ -39,6 +39,7 @@
 	height: 6rem;
 	width: 6rem;
 	cursor: pointer;
+	opacity: .2;
 }
 .right {
 	right: 0;
@@ -50,5 +51,12 @@
 .left:hover,
 .right:hover,
 .close:hover {
-	opacity: .6;
+	opacity: 1;
+}
+
+@media (max-width: 800px){
+	.image {
+		width: 100%;
+		height: auto;
+	}
 }

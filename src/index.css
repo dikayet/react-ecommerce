@@ -37,6 +37,9 @@ a {
 a:hover {
   opacity: .6;
 }
+a button:hover {
+  opacity: 1;
+}
 
 input, textarea, button {
   font-family: 'Raleway', sans-serif;

@@ -8,6 +8,7 @@ import CategoryMenu from '../../CategoryMenu/CategoryMenu';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Legend from '../../../components/UI/Legend/Legend';
 import Input from '../../../components/UI/Input/Input';
+import Button from '../../../components/UI/Button/Button';
 import Item from './Item/Item';
 
 const db = firebase.database();
@@ -88,7 +89,7 @@ class Items extends Component {
 								price: +child.val().price,
 								category: +child.val().category,
 								color: option.color,
-								image: option.images[0],
+								images: option.images,
 								sold: +option.sold
 							});
 						 } else if (query.length === 1){
@@ -99,7 +100,7 @@ class Items extends Component {
 									price: +child.val().price,
 									category: +child.val().category,
 									color: option.color,
-									image: option.images[0],
+									images: option.images,
 									sold: +option.sold
 								});
 							}
@@ -116,7 +117,7 @@ class Items extends Component {
 								price: child.val().price,
 								category: child.val().category,
 								color: option.color,
-								image: option.images[0],
+								images: option.images,
 								sold: option.sold
 							});
 						});
@@ -160,7 +161,10 @@ class Items extends Component {
 		let content = <Spinner />;
 		if (!this.state.loading) {
 			if (this.state.items.length < 1) {
-				content = <p style={{ marginTop: '15%', textAlign: 'center'}}>No Products</p>
+				content = (<div style={{textAlign: 'center', marginTop: '10%'}}>
+					<p>No Products Found</p>
+					<Button style={{margin: '0 auto'}} onClick={() => this.props.history.push('/all')}>See All</Button>
+					</div>);
 			} else {
 				let test = Array.from(this.state.items);
 				content = test.map((el, index) => (

@@ -61,12 +61,17 @@ const changeProductQuant = (state, quant) => {
 	});
 }
 
+const cartDiscard = state => ({
+	products: []
+});
+
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case actionTypes.CART_ADD: return addProduct(state, action.payload);
 		case actionTypes.CART_REMOVE: return removeProduct(state, action.payload);
 		case actionTypes.CART_SET: return setCart(state, action.payload);
 		case actionTypes.CART_CHANGE_QUANT: return changeProductQuant(state, action.payload);
+		case actionTypes.CART_DISCARD: return cartDiscard(state);
 	
 		default: return state;
 	}
