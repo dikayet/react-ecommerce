@@ -21,7 +21,7 @@ const Msg = props => {
 
 		case 'checkout':
 			msg = (
-					<p style={{ width: '50%', margin: '0 auto' }}>Thank you for being interested in my portfolio website, to contact me please: <Button style={{ marginTop: '2rem' }} onClick={e => window.location.href = 'https://dikayet.000webhostapp.com'}>visit my website</Button></p>
+				<p style={{ width: '50%', margin: '0 auto' }}>Thank you for being interested in my portfolio website, to contact me please: <Button style={{ marginTop: '2rem' }} onClick={e => window.location.href = 'https://dikayet-portfolio.netlify.com'}>visit my website</Button></p>
 			);
 			localStorage.removeItem('cart');
 			props.discardCart();
